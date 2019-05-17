@@ -31,8 +31,8 @@ dependencies {
     annotationProcessor deps.build.autoService.processor
     compileOnly deps.build.autoService.annotations
     
-    // Since we use `@CanIgnoreReturnValue` when annotating Validating Builders
-    // ErrorProne Annotations is part of our API. 
+    // Since we use `@CanIgnoreReturnValue` when annotating Builder ErrorProne Annotations are
+    // a part of our API. 
     api deps.build.errorProneAnnotations
 
     testImplementation deps.test.slf4j
