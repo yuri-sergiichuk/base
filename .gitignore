@@ -38,7 +38,7 @@ gradle-app.setting
 /tools/model-compiler/src/main/resources/spine-protoc.gradle
 
 # Interim compilation of Validating Builders
-/base-validating-builders/builders/**/*.class
+/base-validating-builders/compiled-prto/**/*.class
 
 # Prevent accidental adding of credential files
 credentials.tar
