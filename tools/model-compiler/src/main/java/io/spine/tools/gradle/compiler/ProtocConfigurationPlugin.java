@@ -55,7 +55,7 @@ import java.util.Collection;
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.spine.code.fs.java.DefaultJavaProject.at;
-import static io.spine.tools.gradle.ConfigurationName.FETCH;
+import static io.spine.tools.gradle.ConfigurationName.fetch;
 import static io.spine.tools.gradle.ProtobufDependencies.protobufCompiler;
 import static io.spine.tools.gradle.TaskName.clean;
 import static io.spine.tools.gradle.TaskName.writeDescriptorReference;
@@ -159,8 +159,7 @@ public class ProtocConfigurationPlugin extends SpinePlugin {
     }
 
     private GradleTask createCopyPluginJarTask(Project project) {
-        Configuration fetch = project.getConfigurations()
-                                     .maybeCreate(FETCH.value());
+        Configuration fetchConfig = project.getConfigurations().maybeCreate(fetch.value());
         Artifact protocPluginArtifact = Artifact
                 .newBuilder()
                 .useSpineToolsGroup()
@@ -170,10 +169,11 @@ public class ProtocConfigurationPlugin extends SpinePlugin {
                 .build();
         Dependency protocPluginDependency = project
                 .getDependencies()
-                .add(fetch.getName(), protocPluginArtifact.notation());
+                .add(fetchConfig.getName(), protocPluginArtifact.notation());
         checkNotNull(protocPluginDependency,
-                     "Could not create dependency %s %s", fetch.getName(), protocPluginArtifact);
-        Action<Task> action = new CopyPluginJar(project, protocPluginDependency, fetch);
+                     "Could not create dependency %s %s",
+                     fetchConfig.getName(), protocPluginArtifact);
+        Action<Task> action = new CopyPluginJar(project, protocPluginDependency, fetchConfig);
         GradleTask copyPluginJar = newTask(TaskName.copyPluginJar, action)
                 .allowNoDependencies()
                 .withInputProperty(PLUGIN_ARTIFACT_PROPERTY, protocPluginArtifact.notation())
