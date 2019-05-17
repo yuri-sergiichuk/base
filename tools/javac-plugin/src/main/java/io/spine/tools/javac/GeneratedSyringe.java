@@ -18,33 +18,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'spine-base'
+package io.spine.tools.javac;
 
-include 'base'
+import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
 
-include 'testlib'
+import javax.annotation.Generated;
 
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name ->
-    include name
-    project(":$name").projectDir = new File("$rootDir/tools/$name")
+public final class GeneratedSyringe extends AbstractAnnotationSyringe {
+
+    private static final AnnotationArguments ARGUMENTS =
+            AnnotationArguments.value("by Protoc with modifications by Spine");
+
+    private GeneratedSyringe(Name name,
+                             AnnotationArguments arguments,
+                             Context context) {
+        super(name, arguments, context);
+    }
+
+    public static GeneratedSyringe from(Context context) {
+        Names names = Names.instance(context);
+        Name generatedName = names.fromString(Generated.class.getCanonicalName());
+        return new GeneratedSyringe(generatedName, ARGUMENTS, context);
+    }
 }
-
-module 'tool-base'
-module 'plugin-base'
-module 'plugin-testlib'
-
-module 'mute-logging'
-module 'errorprone-checks'
-module 'javadoc-filter'
-module 'javadoc-prettifier'
-module 'model-compiler'
-
-module 'proto-js-plugin'
-
-module 'protoc-api'
-module 'protoc-plugin'
-
-module 'javac-plugin'

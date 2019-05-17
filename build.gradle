@@ -57,7 +57,9 @@ ext {
 
         // Protoc compiler plugin
         'protoc-api',
-        'protoc-plugin'
+        'protoc-plugin',
+
+        'javac-plugin'
     ]
 }
 

@@ -18,33 +18,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'spine-base'
+ext.javaHome = System.properties.find({ it.key == "java.home" }).value
 
-include 'base'
+dependencies {
+    annotationProcessor deps.build.autoService.processor
+    compileOnly deps.build.autoService.annotations
 
-include 'testlib'
-
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name ->
-    include name
-    project(":$name").projectDir = new File("$rootDir/tools/$name")
+    implementation files("$javaHome/../lib/tools.jar")
 }
-
-module 'tool-base'
-module 'plugin-base'
-module 'plugin-testlib'
-
-module 'mute-logging'
-module 'errorprone-checks'
-module 'javadoc-filter'
-module 'javadoc-prettifier'
-module 'model-compiler'
-
-module 'proto-js-plugin'
-
-module 'protoc-api'
-module 'protoc-plugin'
-
-module 'javac-plugin'

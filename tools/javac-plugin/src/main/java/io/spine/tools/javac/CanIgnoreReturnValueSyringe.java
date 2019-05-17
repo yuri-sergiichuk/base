@@ -18,33 +18,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'spine-base'
+package io.spine.tools.javac;
 
-include 'base'
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import com.sun.tools.javac.util.Context;
+import com.sun.tools.javac.util.Name;
+import com.sun.tools.javac.util.Names;
 
-include 'testlib'
+public final class CanIgnoreReturnValueSyringe extends AbstractAnnotationSyringe {
 
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name ->
-    include name
-    project(":$name").projectDir = new File("$rootDir/tools/$name")
+    private CanIgnoreReturnValueSyringe(Name name,
+                                        AnnotationArguments arguments,
+                                        Context context) {
+        super(name, arguments, context);
+    }
+
+    public static CanIgnoreReturnValueSyringe from(Context context) {
+        Names names = Names.instance(context);
+        Name name = names.fromString(CanIgnoreReturnValue.class.getCanonicalName());
+        return new CanIgnoreReturnValueSyringe(name, AnnotationArguments.empty(), context);
+    }
 }
-
-module 'tool-base'
-module 'plugin-base'
-module 'plugin-testlib'
-
-module 'mute-logging'
-module 'errorprone-checks'
-module 'javadoc-filter'
-module 'javadoc-prettifier'
-module 'model-compiler'
-
-module 'proto-js-plugin'
-
-module 'protoc-api'
-module 'protoc-plugin'
-
-module 'javac-plugin'

@@ -18,33 +18,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'spine-base'
+package io.spine.tools.javac;
 
-include 'base'
+import com.sun.tools.javac.tree.JCTree;
 
-include 'testlib'
+public interface AnnotationFactory {
 
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name ->
-    include name
-    project(":$name").projectDir = new File("$rootDir/tools/$name")
+    JCTree.JCAnnotation generated();
 }
-
-module 'tool-base'
-module 'plugin-base'
-module 'plugin-testlib'
-
-module 'mute-logging'
-module 'errorprone-checks'
-module 'javadoc-filter'
-module 'javadoc-prettifier'
-module 'model-compiler'
-
-module 'proto-js-plugin'
-
-module 'protoc-api'
-module 'protoc-plugin'
-
-module 'javac-plugin'
