@@ -28,11 +28,7 @@ dependencies {
 compileJava.options
 
 compileJava {
-    options.compilerArgs += ['-Xplugin:SpineAnnotator', '-verbose']
-    options.fork = true
-    if (options.forkOptions.javaHome == null) {
-        options.forkOptions.javaHome = System.getenv('JAVA_HOME') as File
-    }
+    options.compilerArgs += '-Xplugin:SpineAnnotator'
 }
 
 afterEvaluate {
