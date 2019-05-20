@@ -26,10 +26,11 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
+import io.spine.logging.Logging;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public abstract class AbstractAnnotationSyringe implements AnnotationSyringe {
+public abstract class AbstractAnnotationSyringe implements AnnotationSyringe, Logging {
 
     private final Name name;
     private final AnnotationArguments arguments;
@@ -45,6 +46,7 @@ public abstract class AbstractAnnotationSyringe implements AnnotationSyringe {
 
     @Override
     public void injectIntoClass(JCTree.JCClassDecl classDeclaration) {
+        System.err.printf("Injecting %s into %s.%n", name, classDeclaration);
         JCTree.JCModifiers modifiers = classDeclaration.mods;
         JCTree.JCIdent identifier = treeMaker.Ident(name);
         List<JCTree.JCExpression> annotationArguments = arguments.asExpressions(treeMaker, names);

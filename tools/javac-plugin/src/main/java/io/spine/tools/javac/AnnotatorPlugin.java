@@ -35,10 +35,9 @@ import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.Name;
 
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.DeclaredType;
 
 import static com.sun.source.tree.Tree.Kind.CLASS;
-import static com.sun.source.util.TaskEvent.Kind.GENERATE;
+import static com.sun.source.util.TaskEvent.Kind.ANALYZE;
 
 @AutoService(Plugin.class)
 public final class AnnotatorPlugin implements Plugin {
@@ -53,7 +52,8 @@ public final class AnnotatorPlugin implements Plugin {
         task.addTaskListener(new TaskListener() {
             @Override
             public void started(TaskEvent event) {
-                if (event.getKind() == GENERATE) {
+                System.err.println("Started" + event);
+                if (event.getKind() == ANALYZE) {
                     BasicJavacTask basicTask = (BasicJavacTask) task;
                     Context context = basicTask.getContext();
                     TypeElement element = event.getTypeElement();
@@ -71,25 +71,23 @@ public final class AnnotatorPlugin implements Plugin {
     }
 
     private static void annotate(Tree typeDeclaration, TypeElement element, Context context) {
+        System.err.println("Annotating" + typeDeclaration);
         if (typeDeclaration.getKind() != CLASS) {
+            System.err.println(typeDeclaration + " is not a class");
             return;
         }
         if (typeDeclaration instanceof JCClassDecl) {
             JCClassDecl declaration = (JCClassDecl) typeDeclaration;
-            boolean message = standaloneMessage(declaration) || outerClass(element, declaration);
+            boolean message = messageClass(declaration) || outerClass(element, declaration);
             if (message) {
+                System.err.println("Generated");
                 GeneratedSyringe.from(context)
                                 .injectIntoClass(declaration);
                 annotateBuilders(declaration, context);
+            } else {
+                System.err.println("not a message");
             }
         }
-    }
-
-    private static boolean standaloneMessage(JCClassDecl declaration) {
-        DeclaredType superclass = (DeclaredType) declaration.sym.getSuperclass();
-        return superclass.asElement()
-                         .getSimpleName()
-                         .contentEquals(GeneratedMessageV3.class.getSimpleName());
     }
 
     private static boolean outerClass(TypeElement element, JCClassDecl declaration) {

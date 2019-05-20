@@ -18,34 +18,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-rootProject.name = 'spine-base'
+package io.spine.test;
 
-include 'base'
+public class Tester {
 
-include 'testlib'
+    public static void main(String[] args) {
+        FooBar.Builder builder = FooBar.newBuilder();
 
-/**
- * Includes a module and sets custom project directory to it.
- */
-final def module = { final String name ->
-    include name
-    project(":$name").projectDir = new File("$rootDir/tools/$name")
+        builder.setValue("42");
+        System.out.println(builder.build());
+    }
 }
-
-module 'tool-base'
-module 'plugin-base'
-module 'plugin-testlib'
-
-module 'mute-logging'
-module 'errorprone-checks'
-module 'javadoc-filter'
-module 'javadoc-prettifier'
-module 'model-compiler'
-
-module 'proto-js-plugin'
-
-module 'protoc-api'
-module 'protoc-plugin'
-
-module 'javac-plugin'
-module 'javac-plugin-test'

@@ -23,6 +23,7 @@ ext.javaHome = System.properties.find({ it.key == "java.home" }).value
 dependencies {
     annotationProcessor deps.build.autoService.processor
     compileOnly deps.build.autoService.annotations
-
+    
+    implementation project(':base')
     implementation files("$javaHome/../lib/tools.jar")
 }
