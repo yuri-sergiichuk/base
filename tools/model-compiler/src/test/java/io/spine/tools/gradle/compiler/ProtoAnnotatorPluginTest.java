@@ -215,8 +215,7 @@ class ProtoAnnotatorPluginTest {
         FileDescriptor fileDescriptor = compileAndAnnotate(testFile);
         Descriptor messageDescriptor = fileDescriptor.getMessageTypes()
                                                      .get(0);
-        Path sourcePath = forMessage(messageDescriptor.toProto(), fileDescriptor.toProto())
-                .getPath();
+        Path sourcePath = forMessage(messageDescriptor.toProto(), fileDescriptor.toProto()).path();
         NestedTypeFieldsAnnotationCheck check =
                 new NestedTypeFieldsAnnotationCheck(messageDescriptor, shouldBeAnnotated);
         check(sourcePath, check);
@@ -229,8 +228,7 @@ class ProtoAnnotatorPluginTest {
                                                      .get(0);
         FieldDescriptor experimentalField = messageDescriptor.getFields()
                                                              .get(0);
-        Path sourcePath = forMessage(messageDescriptor.toProto(), fileDescriptor.toProto())
-                .getPath();
+        Path sourcePath = forMessage(messageDescriptor.toProto(), fileDescriptor.toProto()).path();
         check(sourcePath, new FieldAnnotationCheck(experimentalField, shouldBeAnnotated));
     }
 
@@ -240,7 +238,7 @@ class ProtoAnnotatorPluginTest {
         for (Descriptor messageDescriptor : fileDescriptor.getMessageTypes()) {
             DescriptorProto messageProto = messageDescriptor.toProto();
             DescriptorProtos.FileDescriptorProto fileProto = fileDescriptor.toProto();
-            Path messagePath = forMessage(messageProto, fileProto).getPath();
+            Path messagePath = forMessage(messageProto, fileProto).path();
             SourceCheck annotationCheck = new MainDefinitionAnnotationCheck(shouldBeAnnotated);
             check(messagePath, annotationCheck);
         }
@@ -249,7 +247,7 @@ class ProtoAnnotatorPluginTest {
     private void assertNestedTypesAnnotations(FileName testFile, boolean shouldBeAnnotated)
             throws FileNotFoundException {
         FileDescriptor fileDescriptor = compileAndAnnotate(testFile);
-        Path sourcePath = forOuterClassOf(fileDescriptor.toProto()).getPath();
+        Path sourcePath = forOuterClassOf(fileDescriptor.toProto()).path();
         check(sourcePath, new NestedTypesAnnotationCheck(shouldBeAnnotated));
     }
 

@@ -43,7 +43,7 @@ public class SourceProtoBelongsToModule extends ProtoBelongsToModule {
 
     @Override
     protected Path resolve(SourceFile file) {
-        Path result = rootPath.resolve(file.getPath());
+        Path result = rootPath.resolve(file.path());
         return result;
     }
 }

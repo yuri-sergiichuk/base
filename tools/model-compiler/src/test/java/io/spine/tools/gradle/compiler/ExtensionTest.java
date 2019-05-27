@@ -234,7 +234,7 @@ class ExtensionTest {
         File spineDir = defaultProject.tempArtifacts();
         assertTrue(spineDir.mkdir());
         String generatedDir = defaultProject.generated()
-                                            .getPath()
+                                            .path()
                                             .toFile()
                                             .getCanonicalPath();
 

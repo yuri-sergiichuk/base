@@ -182,7 +182,7 @@ public class RejectionGenPlugin extends ProtoPlugin {
             _debug(
                     "Generating rejections from file: `{}` " +
                             "javaPackage: `{}`, javaOuterClassName: `{}`",
-                    source.getPath(),
+                    source.path(),
                     PackageName.resolve(source.getDescriptor()
                                               .toProto()),
                     SimpleClassName.outerOf(source.getDescriptor())
