@@ -40,10 +40,13 @@ import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Maps.newHashMap;
 import static io.spine.js.gradle.ProtoJsPlugin.extensionName;
 import static java.util.stream.Collectors.toList;
+import static org.gradle.api.tasks.SourceSet.MAIN_SOURCE_SET_NAME;
+import static org.gradle.api.tasks.SourceSet.TEST_SOURCE_SET_NAME;
 
 /**
  * An extension for the {@link ProtoJsPlugin} which allows to obtain the {@code generateJsonParsers}
@@ -63,14 +66,14 @@ public class Extension extends GradleExtension {
     public String testDescriptorSetPath;
 
     /**
-     * The absolute path to the main Protobufs compiled to JavaScript.
+     * The base directory to generate code into.
      */
-    public String mainGenProtoDir;
+    public String protoBaseGenDir;
 
     /**
-     * The absolute path to the test Protobufs compiled to JavaScript.
+     * The subdirectory into which the JavaScript code is generated.
      */
-    public String testGenProtoDir;
+    public String jsSubdir;
 
     /**
      * Names of JavaScript modules and directories they provide.
@@ -103,32 +106,37 @@ public class Extension extends GradleExtension {
     public Map<String, List<String>> modules = newHashMap();
     private Task generateParsersTask;
 
-    public static Directory getMainGenProto(Project project) {
+    public static Directory mainGenProto(Project project) {
+        return targetForScope(project, MAIN_SOURCE_SET_NAME);
+    }
+
+    public static Directory testGenProtoDir(Project project) {
+        return targetForScope(project, TEST_SOURCE_SET_NAME);
+    }
+
+    public static Directory baseGenProtoDir(Project project) {
         Extension extension = extension(project);
-        String specifiedValue = extension.mainGenProtoDir;
-        Path path = pathOrDefault(specifiedValue,
-                                  def(project).proto()
-                                              .mainJs());
+        String specifiedValue = nullToEmpty(extension.protoBaseGenDir);
+        Path path = pathOrDefault(specifiedValue, def(project).generated());
         return Directory.at(path);
     }
 
-    public static Directory getTestGenProtoDir(Project project) {
+    private static Directory targetForScope(Project project, String scope) {
         Extension extension = extension(project);
-        String specifiedValue = extension.testGenProtoDir;
-        Path path = pathOrDefault(specifiedValue,
-                                  def(project).proto()
-                                              .testJs());
-        return Directory.at(path);
+        Path path = baseGenProtoDir(project).path();
+        Path subdir = pathOrDefault(extension.jsSubdir, "js");
+        Path targetDir = path.resolve(scope).resolve(subdir);
+        return Directory.at(targetDir);
     }
 
-    public static File getMainDescriptorSet(Project project) {
+    public static File mainDescriptorSet(Project project) {
         Extension extension = extension(project);
         Path path = pathOrDefault(extension.mainDescriptorSetPath,
                                   extension.defaultMainDescriptor(project));
         return path.toFile();
     }
 
-    public static File getTestDescriptorSet(Project project) {
+    public static File testDescriptorSet(Project project) {
         Extension extension = extension(project);
         Path path = pathOrDefault(extension.testDescriptorSetPath,
                                   extension.defaultTestDescriptor(project));

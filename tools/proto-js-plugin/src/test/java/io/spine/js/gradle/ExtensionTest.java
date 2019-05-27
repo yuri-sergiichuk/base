@@ -72,8 +72,8 @@ class ExtensionTest {
     @Test
     @DisplayName("return the default directory with main generated Protobufs")
     void defaultMainGenProto() {
-        Directory directory = Extension.getMainGenProto(project);
-        Directory expected = defaultProject.proto()
+        Directory directory = Extension.mainGenProto(project);
+        Directory expected = defaultProject.generated()
                                            .mainJs();
         assertEquals(expected, directory);
     }
@@ -83,7 +83,7 @@ class ExtensionTest {
     void customMainGenProto() {
         String customPath = "proto/main";
         pluginExtension().mainGenProtoDir = customPath;
-        Directory directory = Extension.getMainGenProto(project);
+        Directory directory = Extension.mainGenProto(project);
         Directory expected = Directory.at(Paths.get(customPath));
         assertEquals(expected, directory);
     }
@@ -91,8 +91,8 @@ class ExtensionTest {
     @Test
     @DisplayName("return the default directory with test generated Protobufs")
     void defaultTestGenProto() {
-        Directory directory = Extension.getTestGenProtoDir(project);
-        Directory expected = defaultProject.proto()
+        Directory directory = Extension.testGenProtoDir(project);
+        Directory expected = defaultProject.generated()
                                            .testJs();
         assertEquals(expected, directory);
     }
@@ -102,7 +102,7 @@ class ExtensionTest {
     void customTestGenProto() {
         String customPath = "proto/test";
         pluginExtension().testGenProtoDir = customPath;
-        Directory directory = Extension.getTestGenProtoDir(project);
+        Directory directory = Extension.testGenProtoDir(project);
         Directory expected = Directory.at(Paths.get(customPath));
         assertEquals(expected, directory);
     }
@@ -110,7 +110,7 @@ class ExtensionTest {
     @Test
     @DisplayName("return the main descriptor set at the default path")
     void defaultMainDescriptorSet() {
-        File file = Extension.getMainDescriptorSet(project);
+        File file = Extension.mainDescriptorSet(project);
         Path mainDescriptors = defaultProject.buildRoot()
                                              .descriptors()
                                              .mainDescriptors();
@@ -125,7 +125,7 @@ class ExtensionTest {
     void customMainDescriptorSet() {
         String customPath = "main/types.desc";
         pluginExtension().mainDescriptorSetPath = customPath;
-        File file = Extension.getMainDescriptorSet(project);
+        File file = Extension.mainDescriptorSet(project);
         File expected = new File(customPath);
         assertEquals(expected, file);
     }
@@ -133,7 +133,7 @@ class ExtensionTest {
     @Test
     @DisplayName("return the test descriptor set at the default path")
     void defaultTestDescriptorSet() {
-        File file = Extension.getTestDescriptorSet(project);
+        File file = Extension.testDescriptorSet(project);
         Path testDescriptors = defaultProject.buildRoot()
                                   .descriptors()
                                   .testDescriptors();
@@ -148,7 +148,7 @@ class ExtensionTest {
     void customTestDescriptorSet() {
         String customPath = "test/types.desc";
         pluginExtension().testDescriptorSetPath = customPath;
-        File file = Extension.getTestDescriptorSet(project);
+        File file = Extension.testDescriptorSet(project);
         File expected = new File(customPath);
         assertEquals(expected, file);
     }

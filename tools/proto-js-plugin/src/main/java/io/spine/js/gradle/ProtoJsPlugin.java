@@ -116,23 +116,23 @@ public class ProtoJsPlugin extends ProtoPlugin {
 
     @Override
     protected Supplier<File> mainDescriptorFile(Project project) {
-        return () -> Extension.getMainDescriptorSet(project);
+        return () -> Extension.mainDescriptorSet(project);
     }
 
     @Override
     protected Supplier<File> testDescriptorFile(Project project) {
-        return () -> Extension.getTestDescriptorSet(project);
+        return () -> Extension.testDescriptorSet(project);
     }
 
     private void generateForMain(Project project) {
-        Directory generatedRoot = Extension.getMainGenProto(project);
+        Directory generatedRoot = Extension.mainGenProto(project);
         Supplier<FileSet> files = mainProtoFiles(project);
         List<ExternalModule> modules = Extension.modules(project);
         generateCode(generatedRoot, files, modules);
     }
 
     private void generateForTest(Project project) {
-        Directory generatedRoot = Extension.getTestGenProtoDir(project);
+        Directory generatedRoot = Extension.testGenProtoDir(project);
         Supplier<FileSet> files = testProtoFiles(project);
         List<ExternalModule> modules = Extension.modules(project);
         generateCode(generatedRoot, files, modules);

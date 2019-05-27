@@ -53,7 +53,7 @@ public final class GivenProject {
     }
 
     public static Directory mainProtoSources() {
-        return project().proto()
+        return project().generated()
                         .mainJs();
     }
 
