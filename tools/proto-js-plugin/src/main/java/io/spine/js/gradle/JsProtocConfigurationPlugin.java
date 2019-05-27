@@ -46,11 +46,6 @@ public final class JsProtocConfigurationPlugin extends ProtocConfigurationPlugin
     }
 
     @Override
-    protected File getTestDescriptorSet(Project project) {
-        return Extension.getTestDescriptorSet(project);
-    }
-
-    @Override
     protected Path generatedFilesBaseDir(Project project) {
         DefaultJsProject jsProject = DefaultJsProject.at(project.getProjectDir());
         DefaultJsProject.GeneratedProtoRoot generatedProtoRoot = jsProject.proto();
@@ -60,5 +55,10 @@ public final class JsProtocConfigurationPlugin extends ProtocConfigurationPlugin
     @Override
     protected File getMainDescriptorSet(Project project) {
         return Extension.getMainDescriptorSet(project);
+    }
+
+    @Override
+    protected File getTestDescriptorSet(Project project) {
+        return Extension.getTestDescriptorSet(project);
     }
 }
