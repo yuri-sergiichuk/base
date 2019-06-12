@@ -4,7 +4,6 @@ build:
   verbosity: detailed
 
 before_build:
-  - git submodule add https://github.com/SpineEventEngine/config config
   - git submodule update --init --recursive
 
 build_script:
