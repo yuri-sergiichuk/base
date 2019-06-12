@@ -1,0 +1,27 @@
+version: "{branch} {build}"
+
+build:
+  verbosity: detailed
+
+build_script:
+  - gradlew build --stacktrace
+  - cd tools/smoke-tests
+  - gradlew build --stacktrace
+  - cd ../..
+
+test_script:
+  - gradlew check --stacktrace
+  - cd tools/smoke-tests
+  - gradlew check --stacktrace
+  - cd ../..
+
+cache:
+  - C:\Users\appveyor\.gradle
+
+environment:
+  matrix:
+  - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
+  - JAVA_HOME: C:\Program Files\Java\jdk11
+
+matrix:
+  fast_finish: true
